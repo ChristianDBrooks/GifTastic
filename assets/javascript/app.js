@@ -19,7 +19,7 @@ function renderButtons() {
 function pullGiphs(search, limit) {
 
     var apiKey = "api_key=3V63lgYu7x52HfL0pZ3wCWMlfz8DpAYp";
-    var queryUrl = "http://api.giphy.com/v1/gifs/search?q="+ search +"&limit="+ limit +"&" + apiKey;
+    var queryUrl = "https://api.giphy.com/v1/gifs/search?q="+ search +"&limit="+ limit +"&" + apiKey;
 
     $.ajax({
         url: queryUrl,
