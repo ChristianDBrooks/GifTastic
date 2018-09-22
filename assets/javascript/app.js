@@ -1,12 +1,14 @@
 $('body').addClass("bg-primary");
 
+var searchlimit;
+var searchRequest;
 var topics = ["Cars", "Trucks", "Motorcycles", "Helicopters", "Boats"];
 
 // Render buttons function will loop through all items in the topics array and create a button for each one and set attr's.
 function renderButtons() {
     $("#button-display").empty();
     for (i = 0; i < topics.length; i++) {
-        var btn = $("<input class='btn btn-primary ml-2 my-2 vehicle'>");
+        var btn = $("<input class='btn btn-primary mr-2 my-2 vehicle'>");
         btn.attr("type", "button"); 
         btn.attr("data-vehicle", topics[i].toLocaleLowerCase());
         btn.attr("value", topics[i]);
@@ -14,10 +16,10 @@ function renderButtons() {
     };
 };
 
-function pullGiphs(search) {
+function pullGiphs(search, limit) {
 
     var apiKey = "api_key=3V63lgYu7x52HfL0pZ3wCWMlfz8DpAYp";
-    var queryUrl = "http://api.giphy.com/v1/gifs/search?q="+ search +"&limit=12&" + apiKey;
+    var queryUrl = "http://api.giphy.com/v1/gifs/search?q="+ search +"&limit="+ limit +"&" + apiKey;
 
     $.ajax({
         url: queryUrl,
@@ -81,7 +83,9 @@ renderButtons();
 // Jquery wrapped document + filter + function to execute.
 $(document).on("click", ".vehicle", function() {
     $("#giphy-display").empty();
-    pullGiphs($(this).attr("data-vehicle"));
+    searchRequest = $(this).attr("data-vehicle");
+    searchLimit = 12;
+    pullGiphs(searchRequest, searchLimit);
 });
 
 // Creates a toggling switch of the attr "data-state" on each click.
@@ -94,4 +98,22 @@ $(document).on("click", ".gif", function() {
       $(this).attr("src", $(this).attr("data-still"));
       $(this).attr("data-state", "still");
     };
-  });
+});
+
+$("#minus").on("click", function() {
+    $("#giphy-display").empty();
+    searchLimit -= 3;
+    pullGiphs(searchRequest, searchLimit);
+});
+
+$("#reset").on("click", function() {
+    $("#giphy-display").empty();
+    searchLimit = 12;
+    pullGiphs(searchRequest, searchLimit);
+});
+
+$("#plus").on("click", function() {
+    $("#giphy-display").empty();
+    searchLimit += 3;
+    pullGiphs(searchRequest, searchLimit);
+});
