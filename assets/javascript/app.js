@@ -4,7 +4,9 @@ var topics = ["Cars", "Trucks", "Motorcycles", "Helicopters", "Boats"];
 
 // Render buttons function will loop through all items in the topics array and create a button for each one and set attr's.
 function renderButtons() {
-    $("#button-display").empty();
+    $("#col-number-one").empty();
+    $("#col-number-two").empty();
+    $("#col-number-three").empty();
     for (i = 0; i < topics.length; i++) {
         var btn = $("<input class='btn btn-primary ml-2 my-2 vehicle'>");
         btn.attr("type", "button"); 
@@ -15,9 +17,9 @@ function renderButtons() {
 };
 
 function pullGiphs(search) {
-
+    var limit = 12;
     var apiKey = "api_key=3V63lgYu7x52HfL0pZ3wCWMlfz8DpAYp";
-    var queryUrl = "http://api.giphy.com/v1/gifs/search?q="+ search +"&limit=12&" + apiKey;
+    var queryUrl = "http://api.giphy.com/v1/gifs/search?q="+ search +"&limit="+ limit +"&" + apiKey;
 
     $.ajax({
         url: queryUrl,
@@ -25,12 +27,10 @@ function pullGiphs(search) {
     }).then(function(response) {
         console.log(response);
         var results = response.data;
-        var rowCounter = 0;
+        var colDiv = $('#col-number-one');
         for (i = 0; i < results.length; i++) {
-            if (i % 3 === 0) {                                                          // A lot of this is fancy code to make a grid system of row and 
-                rowCounter = (i / 3);
-                var rowDiv = $("<div class='row mb-3 row-"+ (i / 3) +"'>");                  // Set up bootstrap grid elements.
-                var colDiv = $("<div class='col text-center'>");
+            if (i < 4) {                                                          // A lot of this is fancy code to make a grid system of row and            // Set up bootstrap grid elements.
+                colDiv = $('#col-number-one');
                 var newImg = $("<img>");
                 var ratingBtn = $("<button class='btn btn-success my-1'>").text("Rating ");
                 var ratingBadge = $("<span class='badge badge-light text-primary'>").text(results[i].rating.toUpperCase());
@@ -41,28 +41,43 @@ function pullGiphs(search) {
                 newImg.attr("data-still", results[i].images.fixed_width_still.url);
                 newImg.attr("data-state", "still");
 
-                colDiv.append(newImg);
-                ratingBtn.append(ratingBadge);      
+                ratingBtn.append(ratingBadge);  
+                colDiv.append(newImg);    
                 colDiv.append(ratingBtn);
-                rowDiv.append(colDiv);
-                $('#giphy-display').append(rowDiv);
-            } else {
-                var colDiv = $("<div class='col text-center'>");
+                $("#giphy-display").append(colDiv);
+            } else if (i < 8) {                                                          // A lot of this is fancy code to make a grid system of row and            // Set up bootstrap grid elements.
+                colDiv = $('#col-number-two');
                 var newImg = $("<img>");
                 var ratingBtn = $("<button class='btn btn-success my-1'>").text("Rating ");
                 var ratingBadge = $("<span class='badge badge-light text-primary'>").text(results[i].rating.toUpperCase());
 
                 newImg.attr("class", "rounded mx-auto d-block gif");
-                newImg.attr("src", results[i].images.fixed_width_still.url);
+                newImg.attr("src", results[i].images.fixed_width_still.url);           // Lets allow pausing of our gif.
                 newImg.attr("data-animate", results[i].images.fixed_width.url);
                 newImg.attr("data-still", results[i].images.fixed_width_still.url);
                 newImg.attr("data-state", "still");
 
-                colDiv.append(newImg);
-                ratingBtn.append(ratingBadge);      
+                ratingBtn.append(ratingBadge);  
+                colDiv.append(newImg);    
                 colDiv.append(ratingBtn);
-                $(".row-" + rowCounter).append(colDiv);
-            };
+                $("#giphy-display").append(colDiv);
+            } else if (i < 12) {                                                          // A lot of this is fancy code to make a grid system of row and            // Set up bootstrap grid elements.
+                colDiv = $('#col-number-three');
+                var newImg = $("<img>");
+                var ratingBtn = $("<button class='btn btn-success my-1'>").text("Rating ");
+                var ratingBadge = $("<span class='badge badge-light text-primary'>").text(results[i].rating.toUpperCase());
+
+                newImg.attr("class", "rounded mx-auto d-block gif");
+                newImg.attr("src", results[i].images.fixed_width_still.url);           // Lets allow pausing of our gif.
+                newImg.attr("data-animate", results[i].images.fixed_width.url);
+                newImg.attr("data-still", results[i].images.fixed_width_still.url);
+                newImg.attr("data-state", "still");
+
+                ratingBtn.append(ratingBadge);  
+                colDiv.append(newImg);    
+                colDiv.append(ratingBtn);
+                $("#giphy-display").append(colDiv);
+            };     
         };
     });
 };
@@ -80,7 +95,9 @@ renderButtons();
 // click handler for the dynamically created jquery buttons. This method allows new buttons to be clicked as well and work.
 // Jquery wrapped document + filter + function to execute.
 $(document).on("click", ".vehicle", function() {
-    $("#giphy-display").empty();
+    $("#col-number-one").empty();
+    $("#col-number-two").empty();
+    $("#col-number-three").empty();
     pullGiphs($(this).attr("data-vehicle"));
 });
 
