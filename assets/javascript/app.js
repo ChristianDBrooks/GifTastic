@@ -72,7 +72,9 @@ function pullGiphs(search, limit) {
 // add-vehicle on click handler for when the user wants to add a new button to the list of buttons.
 $("#add-vehicle").on("click", function(event) {
     event.preventDefault();
-    topics.push($("#vehicle-input").val());
+    if ($("#vehicle-input").val() != '') {
+        topics.push($("#vehicle-input").val());
+    };
     renderButtons();
 });
 
